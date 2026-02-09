@@ -1,6 +1,6 @@
 # nicar-2026-polars
 
-This repo contains resources for the NICAR 2026 workshop [Analyzing election data with Polars and Python](https://schedules.ire.org/nicar-2026/#/session/1061),
+This repo contains resources for the NICAR 2026 workshop [Analyzing election data with Polars and Python](https://schedules.ire.org/nicar-2026/#/session/1061).
 
 ## Software environment
 
