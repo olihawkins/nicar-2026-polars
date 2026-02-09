@@ -1,6 +1,6 @@
 # Environment
 
-Thsese are the to reproduce the virtual environment, both from the lockfile and from scratch if necessary.
+Thsese are the steps to create the virtual environment with `uv`, both by restoring from the lockfile and creating it from scratch if necessary.
 
 ## Create the environment from the lockfile
 
