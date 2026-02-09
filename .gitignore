@@ -1,0 +1,17 @@
+# Directories
+.venv/
+
+# Pycache
+**/__pycache__
+
+# Mac files
+**/.DS_Store
+
+# Dev files
+.python-version
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# Credentials
+.env
