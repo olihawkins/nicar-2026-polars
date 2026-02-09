@@ -21,6 +21,6 @@ The data files are:
 
 - `2024_constituencies.csv` - A table of the election results with one row per constituency
 - `2024_candidates.csv` - A table of the election results with one row per candidate
-- `2019_winning_parties.csv` - A table showing which party won each constituency at the previous election in 2019
+- `2019_constituency_winners.csv` - A table showing which party won each constituency at the previous election in 2019
 
 During the workshop we will answer various questions about the election results by transforming and combining the data from these datasets.
