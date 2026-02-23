@@ -63,9 +63,9 @@ This should open the JupyterLab interface in a web browser.
 
 ## 4. Importing polars
 
-Create a new notebook by choosing `Notebook` in the launcher.
+We haven't provided a pre-filled notebook because we want to you make one from scratch.
 
-We haven't provided a prefilled notebook because we want to you make one from scratch.
+Create a new notebook by choosing `Notebook` in the launcher.
 
 If you haven't used one before, a notebook is an interactive programming enviornment. 
 
