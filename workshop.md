@@ -211,8 +211,8 @@ constituencies.sort(["region_name", "constituency_name"], descending=[True, Fals
 You can combine several Polars operations by chaining method calls. For example we can:
 
 - `select` the `constituency_name`, `winning_party` and `majority` columns
-- `filter` for seats where Labour was the `winning_party`
-- `filter` for seats where the `majority` was over ten thousand 
+- `filter` for seats where the `winning_party` was **Lab**
+- `filter` for seats where the `majority` was over **ten thousand**
 - `sort` by descending `majority`
 
 This will give us a list of safe Labour seats, sorted from the most safe to the least safe.
