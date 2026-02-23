@@ -33,7 +33,7 @@ Doesn't Python already have a dataframe library?
 
 - The first dataframe library for Python was called Pandas
 - It's still widely used but some people find it awkward to work with
-- Polars is newer and had the opportunity to learn from Pandas' mistakes
+- Polars is newer and has had the opportunity to learn from Pandas' mistakes
 
 The main advantages of Polars are:
 
