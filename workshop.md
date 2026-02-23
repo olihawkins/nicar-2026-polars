@@ -38,7 +38,7 @@ Doesn't Python already have a dataframe library?
 The main advantages of Polars are:
 
 - **Speed** - It's written in Rust so it's fast and memory efficient
-- **Types safe** - It has a rich explicit type system that protects against bugs
+- **Type safe** - It has a rich explicit type system that protects against bugs
 - **Easy to use** - It has a coherent, friendly and memorable API
 
 Polars doesn't copy the syntax of R's [tidyverse](https://tidyverse.org/), but it feels similary logical and intuitive. We find it more enjoyable to use than Pandas.
