@@ -15,3 +15,6 @@
 
 # Credentials
 .env
+
+# Workshop notebook
+workshop.ipynb
