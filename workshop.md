@@ -114,7 +114,7 @@ constituencies = pl.read_csv("datasets/2024_constituencies.csv")
 ```
 This loads the csv into the `constituencies` variable.
 
-Add another cell and just include the variable name
+Add another cell and just include the variable name.
 
 ```zsh
 constituencies
@@ -144,13 +144,13 @@ pl.Config.set_tbl_cols(10)
 
 Use the `select` method to select only certain columns from the dataframe. 
 
-You can provide each column name as an argument like this:
+You can provide each column name as an argument like this.
 
 ```python
 mps = constituencies.select("constituency_name", "mp_firstname", "mp_surname")
 ```
 
-Or you can provide them as list
+Or you can provide them as list.
 
 ```python
 mp_columns = ["constituency_name", "mp_firstname", "mp_surname"]
