@@ -217,7 +217,7 @@ You can combine several Polars operations by chaining method calls. For example 
 
 This will give us a list of safe Labour seats, sorted from the most safe to the least safe.
 
-Because Python uses whitespace for formatting the neatest way to type this is to wrap the chain in parentheses.
+Because Python uses whitespace for formatting, the neatest way to type this is to wrap the chain in parentheses.
 
 ```python
 safe_lab_seats = (
