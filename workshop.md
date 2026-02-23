@@ -230,7 +230,7 @@ safe_lab_seats = (
 )
 ```
 
-One other helpful method is `with_row_index`: this adds a column to the start of you dataframe indexing the rows. You can use `offset` to specify the start index.
+One other helpful method is `with_row_index`. This adds a column to the start of you dataframe indexing the rows. You can use `offset` to specify the start index.
 
 ```python
 safe_lab_seats = (
