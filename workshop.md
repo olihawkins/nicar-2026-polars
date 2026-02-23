@@ -87,7 +87,7 @@ There are three ways to run a cell:
 
 ## 5. Our datasets
 
-The data files for the session are included in the `datasets` directory. These contain the results of the 2024 UK general election. The electoral system used in UK general elections is called `first-past-the-post` and it is fairly straightforward:
+The data files for the session are included in the `datasets` directory. These contain the results of the 2024 UK general election. The electoral system used in UK general elections is called `first-past-the-post` and it's fairly straightforward:
 
 - Candidates compete to become the elected Member of Parliament (MP) in one of 650 constituencies
 - A candidate can only stand for one party in one constituency
