@@ -186,6 +186,8 @@ The comparison operators are the same as those used in most programming langauge
 
 In our dataset their is a column called `majority`. This is the number of votes the winning candidate won over the second place candidate. The size of the majority is often taken as a measure of how safe the seat is. See if you can filter for all constituencies where the majority is greater than ten thousand.
 
+**Add something about `is_in` here**
+
 ## 10. Sorting rows
 
 Use the `sort` method so sort the rows. In the simplest case you just specify the column to sort by.
