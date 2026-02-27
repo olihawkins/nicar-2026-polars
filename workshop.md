@@ -107,7 +107,7 @@ During the workshop we will answer various questions about the election results 
 
 Let's start by loading the main dataset: `2024_constituencies.csv`. 
 
-Create a new cell and then add and run the following lines of code:
+Create a new cell and then add and run the following line of code:
 
 ```python
 constituencies = pl.read_csv("datasets/2024_constituencies.csv")
