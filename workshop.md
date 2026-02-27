@@ -186,7 +186,18 @@ The comparison operators are the same as those used in most programming langauge
 
 In our dataset their is a column called `majority`. This is the number of votes the winning candidate won over the second place candidate. The size of the majority is often taken as a measure of how safe the seat is. See if you can filter for all constituencies where the majority is greater than ten thousand.
 
-**Add something about `is_in` here**
+As well as making comparisons, you can test if the value of a particular cell is one of several values usint the `is_in` method of `pl.col`, which takes a list. For example, to find all the constituencies in the southern regions of the UK you could do this.
+
+```python
+southern_regions = ["South East", "South West"]
+southern_constituencies = constituenties.filter(pl.col(region_name).is_in(southern_regions))
+```
+
+To logically negate the condition in a filter use the tilde sign `~` at the start of the expression.
+
+```python
+non_southern_regsions = constituencies.filter(~ pl.col("region_name").is_in(southern_regions))
+```
 
 ## 10. Sorting rows
 
