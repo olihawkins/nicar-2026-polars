@@ -2,27 +2,40 @@
 
 ## Contents
 
+### Intro
+
 1. [What is Polars?](#1-what-is-polars)
 2. [Why use Polars?](#2-why-use-polars)
+
+### Setting up
+
 3. [Setting up](#3-setting-up)
 4. [Importing Polars](#4-importing-polars)
 5. [Our datasets](#5-our-datasets)
 6. [Loading data](#6-loading-data)
 7. [Changing the display configuration](#7-changing-the-display-configuration)
+
+### Working with data
+
 8. [Selecting columns](#8-selecting-columns)
 9. [Filtering rows](#9-filtering-rows)
 10. [Sorting rows](#10-sorting-rows)
 11. [Chaining method calls](#11-chaining-method-calls)
+12. [With columns](#12-with-columns)
+13. [Group by](#13-group-by)
+14. [Joins](#14-joins)
+15. [Saving datasets](#15-saving-datasets)
 
 ## 1. What is Polars?
 
 [Polars](https://pola.rs/) is a dataframe library for Python.
 
-Dataframes are a way of representing tabular data that makes the data easy to transform and analyse. 
+Dataframes are a way of representing tabular data that makes the data easy to transform and analyse.
 
 Dataframes are ideal for storing [tidy data](https://aeturrell.github.io/python4DS/data-tidy.html).
 
 A tidy dataset is a table where:
+
 - Each row is an observation
 - Each column is variable
 - Each cell is a single value
@@ -47,7 +60,7 @@ Polars doesn't copy the syntax of R's [tidyverse](https://tidyverse.org/), but i
 
 We are going to work with Polars in a Jupyter Notebook.
 
-First make sure your Python environment is activated. 
+First make sure your Python environment is activated.
 
 ```zsh
 source .venv/bin/acivate
@@ -67,7 +80,7 @@ We haven't provided a pre-filled notebook because we want to you make one from s
 
 Create a new notebook by choosing `Notebook` in the launcher.
 
-If you haven't used one before, a notebook is an interactive programming enviornment. 
+If you haven't used one before, a notebook is an interactive programming enviornment.
 
 You can add code to each cell and then run that code.
 
@@ -77,7 +90,7 @@ Add the following line of code to the first cell.
 import polars as pl
 ```
 
-Running this cell will import the `polars` package under the name `pl`. 
+Running this cell will import the `polars` package under the name `pl`.
 
 There are three ways to run a cell:
 
@@ -105,13 +118,14 @@ During the workshop we will answer various questions about the election results 
 
 ## 6. Loading data
 
-Let's start by loading the main dataset: `2024_constituencies.csv`. 
+Let's start by loading the main dataset: `2024_constituencies.csv`.
 
 Create a new cell and then add and run the following line of code:
 
 ```python
 constituencies = pl.read_csv("datasets/2024_constituencies.csv")
 ```
+
 This loads the csv into the `constituencies` variable.
 
 Add another cell and just include the variable name.
@@ -142,7 +156,7 @@ pl.Config.set_tbl_cols(10)
 
 ## 8. Selecting columns
 
-Use the `select` method to select only certain columns from the dataframe. 
+Use the `select` method to select only certain columns from the dataframe.
 
 You can provide each column name as an argument like this.
 
@@ -165,7 +179,7 @@ Polars **never changes the dataframe in place**. It always returns the transform
 
 Selecting a subset of the rows is a more complicated operation than selecting columns, because rows are filtered according to criteria that you provide.
 
-To use the `filter` method of a dataframe, you describe the criteria by using `pl.col` to refer to the columns you care about.
+To use the `filter` method of a dataframe, you will need to use `pl.col` to refer to the columns you care about.
 
 Let's start with a simple example.
 
@@ -178,8 +192,8 @@ wales = constituencies.filter(pl.col("region_name") == "Wales")
 The comparison operators are the same as those used in most programming langauges:
 
 - `==` - Equal to
-- `<`  - Less than
-- `>`  - Greater than
+- `<` - Less than
+- `>` - Greater than
 - `<=` - Less than or equal
 - `>=` - Greater than or equal to
 - `!=` - Not equal to
@@ -225,7 +239,7 @@ You can combine several Polars operations by chaining method calls. For example 
 
 - `select` the `constituency_name`, `winning_party` and `majority` columns
 - `filter` for seats where the `winning_party` was "Lab"
-- `filter` for seats where the `majority` was over ten thousand 
+- `filter` for seats where the `majority` was over ten thousand
 - `sort` by descending `majority`
 
 This will give us a list of safe Labour seats, sorted from the most safe to the least safe.
@@ -260,3 +274,221 @@ safe_lab_seats = (
         .with_row_index(offset=1)
 )
 ```
+
+## 12. With columns
+
+So far we have selected, filtered and sorted data.
+
+But what if we want to create a new column or modify an existing one?
+
+Use the with_columns method.
+
+Like filter, this works using Polars expressions and pl.col.
+
+For example, imagine we want to create a new column that shows whether a seat is “safe”. We might define a safe seat as one where the majority is greater than 10,000 votes.
+
+```python
+constituencies = constituencies.with_columns(
+    (pl.col("majority") > 10000).alias("is_safe")
+)
+```
+
+This creates a new column called is_safe containing True or False.
+
+As always, Polars does not modify the dataframe in place. It returns a new one.
+
+You can also transform existing columns. For example, suppose we want to convert the declaration_time column from a string to a datetime:
+
+```python
+constituencies = constituencies.with_columns(
+    pl.col("declaration_time").str.to_datetime()
+)
+```
+
+You can add multiple columns at once by passing multiple expressions.
+
+```python
+constituencies = constituencies.with_columns(
+    (pl.col("majority") > 10000).alias("is_safe"),
+    (pl.col("electorate") - pl.col("total_votes")).alias("non_voters")
+)
+```
+
+### 12.1 Using pl.lit
+
+Sometimes you want to create a column that contains the same value in every row.
+
+To do that, use pl.lit, which stands for “literal”.
+
+For example, suppose we want to label this dataset as the 2024 election.
+
+```python
+constituencies = constituencies.with_columns(
+    pl.lit(2024).alias("election_year")
+)
+```
+
+This creates a new column where every row contains the value 2024.
+
+pl.lit is especially useful when building conditional columns.
+
+For example:
+
+```python
+constituencies = constituencies.with_columns(
+    pl.when(pl.col("majority") > 10000)
+      .then(pl.lit("Safe"))
+      .otherwise(pl.lit("Marginal"))
+      .alias("seat_type")
+)
+```
+
+This creates a new column called seat_type that classifies seats as “Safe” or “Marginal”.
+
+## 13. Group by
+
+Often we want to summarise data rather than look at individual rows.
+
+For example:
+
+How many seats did each party win?
+
+What was the average majority by region?
+
+To do this, use group_by and agg (short for aggregate).
+
+Let’s count how many constituencies each party won.
+
+```python
+seats_by_party = (
+    constituencies
+        .group_by("winning_party")
+        .agg(pl.len().alias("seats_won"))
+        .sort("seats_won", descending=True)
+)
+```
+
+pl.len() counts the number of rows in each group.
+
+We can also calculate statistics. For example, the average majority by region:
+
+```python
+average_majority = (
+    constituencies
+        .group_by("region_name")
+        .agg(
+            pl.col("majority").mean().alias("avg_majority")
+        )
+        .sort("avg_majority", descending=True)
+)
+```
+
+You can calculate multiple summary statistics at once:
+
+```python
+summary = (
+    constituencies
+        .group_by("winning_party")
+        .agg(
+            pl.len().alias("seats"),
+            pl.col("majority").mean().alias("avg_majority"),
+            pl.col("majority").max().alias("largest_majority")
+        )
+)
+```
+
+### 13.1 Null handling
+
+Real-world datasets often contain missing values.
+
+Polars represents missing data as null.
+
+You can check for null values using:
+
+```python
+pl.col("majority").is_null()
+```
+
+You can remove rows containing nulls:
+
+```python
+constituencies.drop_nulls()
+```
+
+Or fill null values with something else:
+
+```python
+constituencies = constituencies.with_columns(
+    pl.col("majority").fill_null(0)
+)
+```
+
+When using group_by, null values are ignored in most aggregation functions like mean().
+
+Being explicit about how you handle nulls helps prevent mistakes in analysis.
+
+## 14. Joins
+
+Often the data we need is spread across multiple datasets.
+
+We have:
+
+2024_constituencies.csv
+
+2024_candidates.csv
+
+2019_constituency_winners.csv
+
+To combine datasets, use a join.
+
+First, load another dataset.
+
+```python
+winners_2019 = pl.read_csv("datasets/2019_constituency_winners.csv")
+```
+
+Suppose both datasets contain a column called constituency_name.
+
+We can join them like this:
+
+```python
+combined = constituencies.join(
+    winners_2019,
+    on="constituency_name",
+    how="left"
+)
+```
+
+The how argument specifies the type of join:
+
+"inner" — keep only matching rows
+
+"left" — keep all rows from the left dataframe
+
+"right" — keep all rows from the right dataframe
+
+"outer" — keep all rows from both
+
+A left join is often safest when you want to preserve your main dataset.
+
+After joining, you can analyse changes between 2019 and 2024.
+
+For example, you might compare the 2024 winning_party with the 2019 winner to find seats that changed hands.
+
+## 15. Saving datasets
+
+After transforming your data, you may want to save the result.
+
+To save a dataframe as a CSV file:
+
+```python
+safe_lab_seats.write_csv("safe_labour_seats.csv")
+```
+
+You can also save to other formats such as Parquet, which is often faster and more efficient:
+
+```python
+safe_lab_seats.write_parquet("safe_labour_seats.parquet")
+```
+
+Parquet files preserve data types and are usually better for large datasets.
