@@ -150,7 +150,7 @@ You can provide each column name as an argument like this.
 mps = constituencies.select("constituency_name", "mp_firstname", "mp_surname")
 ```
 
-Or you can provide them as list.
+Or you can provide them as a list.
 
 ```python
 mp_columns = ["constituency_name", "mp_firstname", "mp_surname"]
