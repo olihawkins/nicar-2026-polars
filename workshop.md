@@ -443,6 +443,16 @@ summary_lab = (
 )
 ```
 
+### Bonus quiz question
+
+This expression in the code block above calculates the number of seats that the Labour won for each value of the grouping variable (in this case in each region).
+
+```python
+(pl.col("winning_party") == "Lab").sum().alias("seats_lab")
+```
+
+Can you figure out how and why this works?
+
 ## 14. Joins
 
 Often the data we need is spread across multiple datasets.
