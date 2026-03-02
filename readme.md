@@ -8,7 +8,7 @@ The workshop requires a Python project folder with a virtual environment that ha
 
 - Clone the repository and run `uv sync` inside the project directory to set up the project
 - Activate the environment with `source .venv/bin/activate`
-- Launch the JupyterLab with `jupyter lab`
+- Launch JupyterLab with `jupyter lab`
 
 If everything has installed correctly, JupyterLab should open in your default web browser.
 
