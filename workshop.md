@@ -23,8 +23,8 @@
 11. [Chaining method calls](#11-chaining-method-calls)
 12. [Adding new columns](#12-adding-new-columns)
 13. [Aggregating data](#13-aggregating-data)
-14. [Null handling](#14-null-handling)
-15. [Joins](#15-joins)
+14. [Joins](#14-joins)
+15. [Null handling](#15-null-handling)
 16. [Saving datasets](#16-saving-datasets)
 
 ## 1. What is Polars?
@@ -402,64 +402,45 @@ seats_by_party = (
 
 `pl.len()` counts the number of rows in each group.
 
-We can also calculate statistics. For example, the average majority by region.
+We can also calculate statistics. 
+
+For example, let's first add a column to our dataset that calculates the Labour party's share of the vote in each constituency.
 
 ```python
-average_majority = (
+constituencies = constituencies.with_columns(
+    (pl.col("votes_lab") / pl.col("valid_votes") * 100).alias("share_lab"),
+)
+```
+
+And then let's calculate Labour's average share of the vote in each region.
+
+```python
+average_share_lab = (
     constituencies
         .group_by("region_name")
-        .agg(
-            pl.col("majority").mean().alias("avg_majority")
-        )
-        .sort("avg_majority", descending=True)
+        .agg(pl.col("share_lab").mean().alias("avg_share_lab"))
+        .sort("avg_share_lab", descending=True)
 )
 ```
 
 You can calculate multiple summary statistics at once.
 
 ```python
-summary = (
+summary_lab = (
     constituencies
-        .group_by("winning_party")
+        .group_by("region_name")
         .agg(
             pl.len().alias("seats"),
-            pl.col("majority").mean().alias("avg_majority"),
-            pl.col("majority").max().alias("largest_majority")
+            (pl.col("winning_party") == "Lab").sum().alias("seats_lab"),
+            pl.col("share_lab").mean().alias("avg_share_lab"),
+            pl.col("share_lab").min().alias("min_share_lab"),
+            pl.col("share_lab").max().alias("max_share_lab")
         )
+        .sort("avg_share_lab", descending=True)
 )
 ```
 
-## 14. Null handling
-
-Real-world datasets often contain missing values.
-
-Polars represents missing data as `null`.
-
-You can check for null values using `is_null`.
-
-```python
-pl.col("majority").is_null()
-```
-
-You can remove rows containing nulls using `drop_nulls`.
-
-```python
-constituencies.drop_nulls()
-```
-
-Or fill null values with something ellse using `fill_nulls`.
-
-```python
-constituencies = constituencies.with_columns(
-    pl.col("majority").fill_null(0)
-)
-```
-
-When using `group_by`, `null` values are ignored in most aggregation functions like `mean`.
-
-Being explicit about how you handle nulls helps prevent mistakes in analysis.
-
-## 15. Joins
+## 14. Joins
 
 Often the data we need is spread across multiple datasets.
 
@@ -471,7 +452,7 @@ We have:
 
 To combine datasets, use a join.
 
-First, load another dataset.
+First, load the dataset that summarises the constituency winners in 2019.
 
 ```python
 winners_2019 = pl.read_csv("datasets/2019_constituency_winners.csv")
@@ -504,7 +485,47 @@ After joining, you can analyse changes between 2019 and 2024.
 
 Try comparing the 2024 `winning_party` with the `winning_party_2019` to find seats that changed hands.
 
-## 15. Saving datasets
+## 15. Null handling
+
+Real-world datasets often contain missing values. Polars represents these missing data values as `null`.
+
+Our datasets do not contain any `null` values, but let's make a dataframe that contains some nulls by doing the same join as before, but with a random subset of rows from the second dataframe. 
+
+By sampling half of the 650 rows, half the rows in our resulting dataframe will contain `null` values for the columns from `winners_2019`.
+
+```python
+has_nulls = constituencies.join(
+    winners_2019.sample(645),
+    on="constituency_id",
+    how="left"
+)
+```
+
+You can check for null values using `is_null`.
+
+```python
+has_nulls.filter(pl.col("winning_party_2019").is_null())
+```
+
+You can remove rows containing nulls using `drop_nulls`.
+
+```python
+has_nulls.drop_nulls()
+```
+
+Or fill null values with something ellse using `fill_nulls`.
+
+```python
+has_nulls.with_columns(
+    pl.col("winning_party_2019").fill_null("Unknown")
+)
+```
+
+When using `group_by`, `null` values are ignored in most aggregation functions like `mean`.
+
+Being explicit about how you handle nulls helps prevent mistakes in analysis.
+
+## 16. Saving datasets
 
 After transforming your data, you may want to save the result.
 
