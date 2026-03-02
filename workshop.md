@@ -93,7 +93,7 @@ import polars as pl
 
 There are three ways to run a cell:
 
-- Hit the play button at the top
+- Hit the play button in the toolbar at the top of the notebook
 - Use Cmd + Enter to run the cell without moving the focus
 - Use Shift + Enter to run the cell and move the focus to the next cell
 
