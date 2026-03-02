@@ -4,7 +4,15 @@ This repo contains resources for the NICAR 2026 workshop [Analyzing election dat
 
 ## Software environment
 
-The workshop requires a Python project folder with a virtual environment that has `ipython`, `jupyterlab` and `polars` installed. This repo uses [uv](https://docs.astral.sh/uv/) to set up the virtual environment and to install the packages, but the instructions can be adapted to use plain `pip` or `pipenv`. The Python version should be version 3.13 or later. See the [Environment](docs/environment.md) documentation for detailed notes on setting up the environment.
+The workshop requires a Python project folder with a virtual environment that has `ipython`, `jupyterlab` and `polars` installed. This repo uses [uv](https://docs.astral.sh/uv/) to set up the virtual environment and to install the packages. 
+
+- Clone the repository and run `uv sync` inside the project directory to set up the project
+- Activate the environment with `source .venv/bin/activate`
+- Launch the JupyterLab with `jupyter lab`
+
+If everything has installed correctly, JupyterLab should open in your default web browser.
+
+The Python version should be version 3.13 or later. See the [Environment](docs/environment.md) documentation for detailed notes on setting up the environment.
 
 ## Workshop notes
 
