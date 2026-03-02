@@ -311,9 +311,9 @@ constituencies.with_columns(
 
 This creates a new column called `is_safe` containing `True` or `False` values.
 
-The expression used in this example should be familiar, because it is the same one we used to filter the dataframe.
+The expression used in this example should be familiar, because it is the same one we used to filter the dataframe previously.
 
-But `with_columns` accepts a much wider range of expressions than `filter`, which only accepts expressions that return True or False.
+But `with_columns` accepts a much wider range of expressions than `filter`, which only accepts expressions that return `True` or `False`.
 
 ### Understanding `alias`
 
