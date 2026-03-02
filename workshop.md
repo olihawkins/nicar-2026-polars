@@ -504,7 +504,7 @@ Real-world datasets often contain missing values. Polars represents these missin
 
 Our datasets do not contain any `null` values, but let's make a dataframe that contains some nulls by doing the same join as before, but with a random subset of rows from the second dataframe. 
 
-By sampling half of the 650 rows, half the rows in our resulting dataframe will contain `null` values for the columns from `winners_2019`.
+By sampling only 300 of the 650 rows from `winners_209`, more than half of the rows in our resulting dataframe will contain `null` values for the columns from `winners_2019`.
 
 ```python
 has_nulls = constituencies.join(
