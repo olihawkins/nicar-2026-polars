@@ -33,7 +33,7 @@
 
 Dataframes are a way of representing tabular data that makes the data easy to transform and analyse.
 
-Dataframes are ideal for storing [tidy data](https://aeturrell.github.io/python4DS/data-tidy.html).
+Dataframes are ideal for storing **tidy data**.
 
 A tidy dataset is a table where:
 
