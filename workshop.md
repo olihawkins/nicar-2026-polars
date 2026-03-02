@@ -145,7 +145,7 @@ By default Polars prints only ten rows from the dataframe: the first five and th
 To change this limit you can set the Polars configuration like this:
 
 ```python
-pl.Config.set_tbl_rows(20)
+pl.Config.set_tbl_rows(15)
 ```
 
 In some environments (e.g. IPython) it also shows only some of the columns. You can change that setting too if you need to.
