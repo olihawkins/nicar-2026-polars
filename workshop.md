@@ -127,7 +127,7 @@ Create a new cell and then add and run the following line of code:
 constituencies = pl.read_csv("datasets/2024_constituencies.csv")
 ```
 
-This loads the csv data into the `constituencies` variable as a dataframe.
+This loads the CSV data into the `constituencies` variable as a dataframe.
 
 Add another cell and just include the variable name.
 
@@ -540,5 +540,4 @@ You can also save to other formats such as Parquet, which is often faster and mo
 ```python
 summary_lab.write_parquet("datasets/summary_lab.parquet")
 ```
-
-Parquet files preserve the data types of the columns and they are much smaller for the same amount of data, so they are usually better for large datasets.
+Parquet files are **great**! They are much smaller than CSVs and they preserve the datatypes of the columns, so you don't get errors from your software having to guess the datatype by looking at the data.
