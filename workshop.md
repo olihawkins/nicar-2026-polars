@@ -335,7 +335,7 @@ constituencies.with_columns(
 )
 ```
 
-You can add multiple columns at once by passing multiple expressions.
+You can add multiple columns at once by passing multiple expressions. So in addition to converting the `declaration_time`, we can create a column for `turnout` that shows the percentage of the people who were eligible to vote that actually did vote.
 
 ```python
 constituencies.with_columns(
