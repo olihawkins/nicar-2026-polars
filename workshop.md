@@ -189,7 +189,7 @@ Each of the 650 constituencies in the dataset belongs to a region. Let's find al
 wales = constituencies.filter(pl.col("region_name") == "Wales")
 ```
 
-The comparison operators are the same as those used in most programming langauges:
+The comparison operators you use to `filter` are the same as those used in most programming langauges:
 
 - `==` - Equal to
 - `<` - Less than
