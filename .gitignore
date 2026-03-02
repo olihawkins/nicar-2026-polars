@@ -20,5 +20,5 @@
 workshop.ipynb
 
 # Example output files
-datasets/summary_lab.csv
-datasets/summary_lab.parquet
+datasets/election_comparison.csv
+datasets/election_comparison.parquet
