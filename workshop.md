@@ -526,7 +526,7 @@ You can remove rows containing nulls using `drop_nulls`.
 has_nulls.drop_nulls()
 ```
 
-Or fill null values with something ellse using `fill_nulls`.
+Or fill null values with something else using `fill_nulls`.
 
 ```python
 has_nulls.with_columns(
