@@ -508,7 +508,7 @@ By sampling only 300 of the 650 rows from `winners_209`, more than half of the r
 
 ```python
 has_nulls = constituencies.join(
-    winners_2019.sample(645),
+    winners_2019.sample(300),
     on="constituency_id",
     how="left"
 )
