@@ -384,7 +384,7 @@ Often we want to summarise data, rather than look at individual rows.
 For example:
 
 - How many seats did each party win?
-- What was the average majority by region?
+- What was the average share of the vote for Labour by region?
 
 To do this, use `group_by` and `agg` (short for aggregate).
 
