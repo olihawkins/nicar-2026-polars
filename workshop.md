@@ -198,7 +198,7 @@ The comparison operators you use to `filter` are the same as those used in most 
 - `>=` - Greater than or equal to
 - `!=` - Not equal to
 
-In our dataset their is a column called `majority`. This is the number of votes the winning candidate won over the second place candidate. The size of the majority is often taken as a measure of how safe the seat is. 
+In our dataset their is a column called `majority`. This is the number of votes the winning candidate won over the second place candidate. The size of the majority is often taken as a measure of how safe a seat is. 
 
 ### Try it yourself
 
