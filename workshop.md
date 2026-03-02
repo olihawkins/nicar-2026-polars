@@ -21,10 +21,11 @@
 9. [Filtering rows](#9-filtering-rows)
 10. [Sorting rows](#10-sorting-rows)
 11. [Chaining method calls](#11-chaining-method-calls)
-12. [With columns](#12-with-columns)
-13. [Group by](#13-group-by)
-14. [Joins](#14-joins)
-15. [Saving datasets](#15-saving-datasets)
+12. [Adding new columns](#12-adding-new-columns)
+13. [Aggregating data](#13-aggregating-data)
+14. [Null handling](#14-null-handling)
+15. [Joins](#15-joins)
+16. [Saving datasets](#16-saving-datasets)
 
 ## 1. What is Polars?
 
@@ -63,7 +64,7 @@ We are going to work with Polars in a Jupyter Notebook.
 First make sure your Python environment is activated.
 
 ```zsh
-source .venv/bin/acivate
+source .venv/bin/activate
 ```
 
 Then start the Jupyter server.
@@ -90,13 +91,13 @@ Add the following line of code to the first cell.
 import polars as pl
 ```
 
-Running this cell will import the `polars` package under the name `pl`.
-
 There are three ways to run a cell:
 
 - Hit the play button at the top
 - Use Cmd + Enter to run the cell without moving the focus
 - Use Shift + Enter to run the cell and move the focus to the next cell
+
+Running this cell will import the `polars` package under the name `pl`.
 
 ## 5. Our datasets
 
@@ -126,7 +127,7 @@ Create a new cell and then add and run the following line of code:
 constituencies = pl.read_csv("datasets/2024_constituencies.csv")
 ```
 
-This loads the csv into the `constituencies` variable.
+This loads the csv data into the `constituencies` variable as a dataframe.
 
 Add another cell and just include the variable name.
 
@@ -145,7 +146,7 @@ By default Polars prints only ten rows from the dataframe: the first five and th
 To change this limit you can set the Polars configuration like this:
 
 ```python
-pl.Config.set_tbl_rows(8)
+pl.Config.set_tbl_rows(20)
 ```
 
 In some environments (e.g. IPython) it also shows only some of the columns. You can change that setting too if you need to.
@@ -198,19 +199,35 @@ The comparison operators are the same as those used in most programming langauge
 - `>=` - Greater than or equal to
 - `!=` - Not equal to
 
-In our dataset their is a column called `majority`. This is the number of votes the winning candidate won over the second place candidate. The size of the majority is often taken as a measure of how safe the seat is. See if you can filter for all constituencies where the majority is greater than ten thousand.
+In our dataset their is a column called `majority`. This is the number of votes the winning candidate won over the second place candidate. The size of the majority is often taken as a measure of how safe the seat is. 
+
+### Try it yourself
+
+See if you can filter for all constituencies where the majority is greater than ten thousand.
+
+### Using `is_in`
 
 As well as making comparisons, you can test if the value of a particular cell is one of several values usint the `is_in` method of `pl.col`, which takes a list. For example, to find all the constituencies in the southern regions of the UK you could do this.
 
 ```python
-southern_regions = ["South East", "South West"]
-southern_constituencies = constituenties.filter(pl.col(region_name).is_in(southern_regions))
+northern_regions = [
+    "North East", 
+    "North West", 
+    "Yorkshire and The Humber"
+]
+
+northern_constituencies = constituencies.filter(pl.col("region_name").is_in(northern_regions))
+northern_constituencies
 ```
 
-To logically negate the condition in a filter use the tilde sign `~` at the start of the expression.
+### Using `~` to negate the conditioin
+
+Use a tilde `~` at the start of the `filter` expression to find all rows that don't meet the criteria.
+
+You can read is as "not *{the filter criteria}*".
 
 ```python
-non_southern_regsions = constituencies.filter(~ pl.col("region_name").is_in(southern_regions))
+non_southern_regsions = constituencies.filter(~ pl.col("region_name").is_in(northern_regions))
 ```
 
 ## 10. Sorting rows
@@ -275,62 +292,78 @@ safe_lab_seats = (
 )
 ```
 
-## 12. With columns
+## 12. Adding new columns
 
 So far we have selected, filtered and sorted data.
 
 But what if we want to create a new column or modify an existing one?
 
-Use the with_columns method.
+Use the `with_columns` method.
 
-Like filter, this works using Polars expressions and pl.col.
+Like `filter`, this works using Polars expressions and `pl.col`.
 
-For example, imagine we want to create a new column that shows whether a seat is “safe”. We might define a safe seat as one where the majority is greater than 10,000 votes.
+### Using expressions in `with_columns`
+
+For example, instead of filtering for safe seats for each party, we could create a new column that shows whether a seat is "safe" for the winning party in each constituency.
 
 ```python
-constituencies = constituencies.with_columns(
+constituencies.with_columns(
     (pl.col("majority") > 10000).alias("is_safe")
 )
 ```
 
-This creates a new column called is_safe containing True or False.
+This creates a new column called `is_safe` containing `True` or `False` values.
 
-As always, Polars does not modify the dataframe in place. It returns a new one.
+The expression used in this example should be familiar, because it is the same one we used to filter the dataframe.
 
-You can also transform existing columns. For example, suppose we want to convert the declaration_time column from a string to a datetime:
+But `with_columns` accepts a much wider range of expressions than `filter`, which only accepts expressions that return True or False.
+
+### Understanding `alias`
+
+The `alias` method of a Polars expression is used to provide the name of the column that should be created from the expression.
+
+### Transforming columns in place
+
+If you don't call `alias` at the end of your expression, the new data will replace the values of the first column in the expression.
+
+This means that if you want to modify a column in place, you can just leave off `alias`.
+
+You can also transform existing columns. For example, suppose we want to convert the `declaration_time` column from a string to a datetime:
 
 ```python
-constituencies = constituencies.with_columns(
-    pl.col("declaration_time").str.to_datetime()
+constituencies.with_columns(
+    pl.col("declaration_time").str.to_datetime(time_zone="Europe/London")
 )
 ```
 
 You can add multiple columns at once by passing multiple expressions.
 
 ```python
-constituencies = constituencies.with_columns(
-    (pl.col("majority") > 10000).alias("is_safe"),
-    (pl.col("electorate") - pl.col("total_votes")).alias("non_voters")
+constituencies.with_columns(
+    pl.col("declaration_time").str.to_datetime(time_zone="Europe/London"),
+    (pl.col("valid_votes") / pl.col("electorate") * 100).alias("turnout")
 )
 ```
 
-### 12.1 Using pl.lit
+### Using `pl.lit`
 
 Sometimes you want to create a column that contains the same value in every row.
 
-To do that, use pl.lit, which stands for “literal”.
+To do that, use `pl.lit`, which stands for “literal”.
 
 For example, suppose we want to label this dataset as the 2024 election.
 
 ```python
-constituencies = constituencies.with_columns(
+constituencies.with_columns(
     pl.lit(2024).alias("election_year")
 )
 ```
 
 This creates a new column where every row contains the value 2024.
 
-pl.lit is especially useful when building conditional columns.
+### Using `pl.when`
+
+`pl.lit` is especially useful when building conditional columns with `pl.when`.
 
 For example:
 
@@ -343,19 +376,18 @@ constituencies = constituencies.with_columns(
 )
 ```
 
-This creates a new column called seat_type that classifies seats as “Safe” or “Marginal”.
+This creates a new column called `seat_type` that classifies seats as “Safe” or “Marginal”.
 
-## 13. Group by
+## 13. Aggregating data
 
-Often we want to summarise data rather than look at individual rows.
+Often we want to summarise data, rather than look at individual rows.
 
 For example:
 
-How many seats did each party win?
+- How many seats did each party win?
+- What was the average majority by region?
 
-What was the average majority by region?
-
-To do this, use group_by and agg (short for aggregate).
+To do this, use `group_by` and `agg` (short for aggregate).
 
 Let’s count how many constituencies each party won.
 
@@ -368,9 +400,9 @@ seats_by_party = (
 )
 ```
 
-pl.len() counts the number of rows in each group.
+`pl.len()` counts the number of rows in each group.
 
-We can also calculate statistics. For example, the average majority by region:
+We can also calculate statistics. For example, the average majority by region.
 
 ```python
 average_majority = (
@@ -383,7 +415,7 @@ average_majority = (
 )
 ```
 
-You can calculate multiple summary statistics at once:
+You can calculate multiple summary statistics at once.
 
 ```python
 summary = (
@@ -397,25 +429,25 @@ summary = (
 )
 ```
 
-### 13.1 Null handling
+### 14. Null handling
 
 Real-world datasets often contain missing values.
 
-Polars represents missing data as null.
+Polars represents missing data as `null`.
 
-You can check for null values using:
+You can check for null values using `is_null`.
 
 ```python
 pl.col("majority").is_null()
 ```
 
-You can remove rows containing nulls:
+You can remove rows containing nulls using `drop_nulls`.
 
 ```python
 constituencies.drop_nulls()
 ```
 
-Or fill null values with something else:
+Or fill null values with something ellse using `fill_nulls`.
 
 ```python
 constituencies = constituencies.with_columns(
@@ -423,21 +455,19 @@ constituencies = constituencies.with_columns(
 )
 ```
 
-When using group_by, null values are ignored in most aggregation functions like mean().
+When using `group_by`, `null` values are ignored in most aggregation functions like `mean`.
 
 Being explicit about how you handle nulls helps prevent mistakes in analysis.
 
-## 14. Joins
+## 15. Joins
 
 Often the data we need is spread across multiple datasets.
 
 We have:
 
-2024_constituencies.csv
-
-2024_candidates.csv
-
-2019_constituency_winners.csv
+- 2024_constituencies.csv
+- 2024_candidates.csv
+- 2019_constituency_winners.csv
 
 To combine datasets, use a join.
 
@@ -447,33 +477,32 @@ First, load another dataset.
 winners_2019 = pl.read_csv("datasets/2019_constituency_winners.csv")
 ```
 
-Suppose both datasets contain a column called constituency_name.
+Both datasets contain a column called `constituency_id`.
 
 We can join them like this:
 
 ```python
-combined = constituencies.join(
+election_comparison = constituencies.join(
     winners_2019,
-    on="constituency_name",
+    on="constituency_id",
     how="left"
 )
 ```
 
-The how argument specifies the type of join:
+The `how` argument specifies the type of join:
 
-"inner" — keep only matching rows
-
-"left" — keep all rows from the left dataframe
-
-"right" — keep all rows from the right dataframe
-
-"outer" — keep all rows from both
+- "inner" — keep only matching rows
+- "left" — keep all rows from the left dataframe
+- "right" — keep all rows from the right dataframe
+- "outer" — keep all rows from both
 
 A left join is often safest when you want to preserve your main dataset.
 
+### Try it yourself
+
 After joining, you can analyse changes between 2019 and 2024.
 
-For example, you might compare the 2024 winning_party with the 2019 winner to find seats that changed hands.
+Try comparing the 2024 `winning_party` with the `winning_party_2019` to find seats that changed hands.
 
 ## 15. Saving datasets
 
