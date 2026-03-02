@@ -223,10 +223,8 @@ northern_constituencies
 
 Use a tilde `~` at the start of the `filter` expression to find all rows that don't meet the criteria.
 
-You can read is as "not *{the filter criteria}*".
-
 ```python
-non_southern_regsions = constituencies.filter(~ pl.col("region_name").is_in(northern_regions))
+other_regions = constituencies.filter(~ pl.col("region_name").is_in(northern_regions))
 ```
 
 ## 10. Sorting rows
