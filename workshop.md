@@ -481,9 +481,9 @@ A left join is often safest when you want to preserve your main dataset.
 
 ### Try it yourself
 
-After joining, you can analyse changes between 2019 and 2024.
+After joining the dataframes, you can analyse changes between 2019 and 2024.
 
-Try comparing the 2024 `winning_party` with the `winning_party_2019` to find seats that changed hands.
+Try comparing the 2024 `winning_party` with the `winning_party_2019` to find all seats that changed hands.
 
 ## 15. Null handling
 
