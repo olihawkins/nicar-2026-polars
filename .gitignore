@@ -18,3 +18,7 @@
 
 # Workshop notebook
 workshop.ipynb
+
+# Example output files
+datasets/summary_lab.csv
+datasets/summary_lab.parquet

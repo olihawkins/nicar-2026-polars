@@ -532,13 +532,13 @@ After transforming your data, you may want to save the result.
 To save a dataframe as a CSV file:
 
 ```python
-safe_lab_seats.write_csv("safe_labour_seats.csv")
+summary_lab.write_csv("datasets/summary_lab.csv")
 ```
 
 You can also save to other formats such as Parquet, which is often faster and more efficient:
 
 ```python
-safe_lab_seats.write_parquet("safe_labour_seats.parquet")
+summary_lab.write_parquet("datasets/summary_lab.parquet")
 ```
 
-Parquet files preserve data types and are usually better for large datasets.
+Parquet files preserve the data types of the columns and they are much smaller for the same amount of data, so they are usually better for large datasets.
