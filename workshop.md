@@ -358,7 +358,7 @@ constituencies.with_columns(
 )
 ```
 
-This creates a new column where every row contains the value 2024.
+This creates a new column where every row contains the value `2024`.
 
 ### Using `pl.when`
 
