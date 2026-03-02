@@ -107,7 +107,6 @@ The data files for the workshop are included in the `datasets` directory. These 
 - A candidate can only stand for one party in one constituency
 - Every voter casts one vote for one candidate in one constituency
 - The candidate with the most votes in each constituency wins that seat
-- The party that wins the most seats forms the next government (most of the time)
 
 The data files are:
 
