@@ -297,7 +297,7 @@ But what if we want to create a new column or modify an existing one?
 
 Use the `with_columns` method.
 
-Like `filter`, this works using Polars expressions and `pl.col`.
+Like `filter`, this works using expressions built with `pl.col`.
 
 ### Using expressions in `with_columns`
 
