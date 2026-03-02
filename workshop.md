@@ -256,7 +256,7 @@ You can combine several Polars operations by chaining method calls. For example 
 - `filter` for seats where the `majority` was over ten thousand
 - `sort` by descending `majority`
 
-This will give us a list of safe Labour seats, sorted from the most safe to the least safe.
+This will give us a list of safe seats won by the Labour party, sorted from the most safe to the least safe.
 
 Because Python uses whitespace for formatting, the neatest way to type this is to wrap the chain in parentheses.
 
@@ -384,7 +384,7 @@ Often we want to summarise data, rather than look at individual rows.
 For example:
 
 - How many seats did each party win?
-- What was the average share of the vote for Labour by region?
+- What was the average share of the vote for the Labour party by region?
 
 To do this, use `group_by` and `agg` (short for aggregate).
 
@@ -411,7 +411,7 @@ constituencies = constituencies.with_columns(
 )
 ```
 
-And then let's calculate Labour's average share of the vote in each region.
+And then let's calculate the Labour party's average share of the vote in each region.
 
 ```python
 average_share_lab = (
