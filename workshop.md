@@ -407,7 +407,7 @@ seats_by_party = (
 
 We can also calculate statistics. 
 
-For example, let's first add a column to our dataset that calculates the Labour party's share of the vote in each constituency.
+For example, let's first add a column to our dataset that calculates the Labour party's share of the vote in each constituency: the number of votes for Labour divided by the number of valid votes in total.
 
 ```python
 constituencies = constituencies.with_columns(
