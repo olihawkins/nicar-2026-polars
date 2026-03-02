@@ -472,10 +472,10 @@ election_comparison = constituencies.join(
 
 The `how` argument specifies the type of join:
 
-- "inner" — keep only matching rows
-- "left" — keep all rows from the left dataframe
-- "right" — keep all rows from the right dataframe
-- "outer" — keep all rows from both
+- `inner` — keep only matching rows
+- `left` — keep all rows from the left dataframe
+- `right` — keep all rows from the right dataframe
+- `outer` — keep all rows from both
 
 A left join is often safest when you want to preserve your main dataset.
 
