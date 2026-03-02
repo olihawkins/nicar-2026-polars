@@ -299,7 +299,7 @@ Use the `with_columns` method.
 
 Like `filter`, this works using expressions built with `pl.col`.
 
-### Using expressions in `with_columns`
+### Using `with_columns`
 
 For example, instead of filtering for safe seats for each party, we could create a new column that shows whether a seat is "safe" for the winning party in each constituency.
 
