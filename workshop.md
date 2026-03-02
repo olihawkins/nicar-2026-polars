@@ -429,7 +429,7 @@ summary = (
 )
 ```
 
-### 14. Null handling
+## 14. Null handling
 
 Real-world datasets often contain missing values.
 
