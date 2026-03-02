@@ -445,7 +445,7 @@ summary_lab = (
 
 ### Bonus quiz question
 
-This expression in the code block above calculates the number of seats that the Labour won for each value of the grouping variable (in this case in each region).
+This expression in the code block above calculates the number of seats that Labour won in each region.
 
 ```python
 (pl.col("winning_party") == "Lab").sum().alias("seats_lab")
