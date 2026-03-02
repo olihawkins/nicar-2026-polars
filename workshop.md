@@ -446,9 +446,9 @@ Often the data we need is spread across multiple datasets.
 
 We have:
 
-- 2024_constituencies.csv
-- 2024_candidates.csv
-- 2019_constituency_winners.csv
+- `2024_constituencies.csv`
+- `2024_candidates.csv`
+- `2019_constituency_winners.csv`
 
 To combine datasets, use a join.
 
