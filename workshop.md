@@ -388,6 +388,8 @@ For example:
 
 To do this, use `group_by` and `agg` (short for aggregate).
 
+### Counting rows by group
+
 Let’s count how many constituencies each party won.
 
 ```python
@@ -400,6 +402,8 @@ seats_by_party = (
 ```
 
 `pl.len()` counts the number of rows in each group.
+
+### Calculating aggregate statistics
 
 We can also calculate statistics. 
 
