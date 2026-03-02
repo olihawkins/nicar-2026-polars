@@ -91,7 +91,7 @@ Add the following line of code to the first cell.
 import polars as pl
 ```
 
-There are three ways to run a cell:
+There are three ways to run the cell:
 
 - Hit the play button in the toolbar at the top of the notebook
 - Use Cmd + Enter to run the cell without moving the focus
