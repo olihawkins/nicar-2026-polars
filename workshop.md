@@ -321,7 +321,7 @@ The `alias` method of a Polars expression is used to provide the name of the col
 
 ### Transforming columns in place
 
-If you don't call `alias` at the end of your expression, the new data will replace the values of the first column in your expression.
+If you don't call `alias` at the end of your expression, the new data will replace the values of the column used in your expression (or the first column if there is more than one column).
 
 This means that if you want to modify a column in place, you can just leave off `alias`.
 
