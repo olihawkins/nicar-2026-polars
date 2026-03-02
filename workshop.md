@@ -206,7 +206,7 @@ See if you can filter for all constituencies where the majority is greater than 
 
 ### Using `is_in`
 
-As well as making comparisons, you can test if the value of a particular cell is one of several values usint the `is_in` method of `pl.col`, which takes a list. For example, to find all the constituencies in the southern regions of the UK you could do this.
+As well as making comparisons, you can test if the value in a cell belongs to a list of values using the `is_in` method of `pl.col`. For example, to find all the constituencies in the northern regions of the UK you could do this.
 
 ```python
 northern_regions = [
