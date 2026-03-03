@@ -188,8 +188,6 @@ The comparison operators you use to `filter` are the same as those used in most 
 
 In our dataset their is a column called `majority`. This is the number of votes the winning candidate won over the second place candidate. The size of the majority is often taken as a measure of how safe a seat is. 
 
-#### Try it yourself
-
 See if you can filter for all constituencies where the majority is greater than ten thousand.
 
 #### Using `is_in`
