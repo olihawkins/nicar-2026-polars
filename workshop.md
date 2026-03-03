@@ -422,12 +422,9 @@ summary = (
 
 ### 13. Joins
 
-Often the data we need is spread across multiple datasets.
-
-We have:
+Often the data we need is spread across multiple datasets. Let's join these two:
 
 - `2024_constituencies.csv`
-- `2024_candidates.csv`
 - `2019_constituency_winners.csv`
 
 To combine datasets, use a `join`.
