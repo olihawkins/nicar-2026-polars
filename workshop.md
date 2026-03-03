@@ -456,7 +456,7 @@ The `how` argument specifies the type of join:
 
 A left join is often safest when you want to preserve your main dataset.
 
-After joining the dataframes, we can work out how many seats changed from one party to another.
+After joining the dataframes, we can work out how many seats changed hands from one party to another.
 
 ```python
 (
