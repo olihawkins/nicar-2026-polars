@@ -13,19 +13,18 @@
 4. [Importing Polars](#4-importing-polars)
 5. [Our datasets](#5-our-datasets)
 6. [Loading data](#6-loading-data)
-7. [Changing the display configuration](#7-changing-the-display-configuration)
 
 ### Working with data
 
-8. [Selecting columns](#8-selecting-columns)
-9. [Filtering rows](#9-filtering-rows)
-10. [Sorting rows](#10-sorting-rows)
-11. [Chaining method calls](#11-chaining-method-calls)
-12. [Adding new columns](#12-adding-new-columns)
-13. [Aggregating data](#13-aggregating-data)
-14. [Joins](#14-joins)
-15. [Null handling](#15-null-handling)
-16. [Saving datasets](#16-saving-datasets)
+7. [Selecting columns](#7-selecting-columns)
+8. [Filtering rows](#8-filtering-rows)
+9. [Sorting rows](#9-sorting-rows)
+10. [Chaining method calls](#10-chaining-method-calls)
+11. [Adding new columns](#11-adding-new-columns)
+12. [Aggregating data](#12-aggregating-data)
+13. [Joins](#13-joins)
+14. [Null handling](#14-null-handling)
+15. [Saving datasets](#15-saving-datasets)
 
 ---
 
@@ -148,27 +147,11 @@ Putting the name of a variable on the last line of a cell will print the content
 
 Notice that while Polars has correctly guessed the types of most of the columns, the `declaration_time` column has been loaded as a string and not a datetime. We will fix that later.
 
-### 7. Changing the display configuration
-
-By default Polars prints only ten rows from the dataframe: the first five and the last five.
-
-To change this limit you can set the Polars configuration like this:
-
-```python
-pl.Config.set_tbl_rows(15)
-```
-
-In some environments (e.g. IPython) it also shows only some of the columns. You can change that setting too if you need to.
-
-```python
-pl.Config.set_tbl_cols(10)
-```
-
 ---
 
 ## Working with data
 
-### 8. Selecting columns
+### 7. Selecting columns
 
 Use the `select` method to select only certain columns from the dataframe.
 
@@ -189,7 +172,7 @@ If you now print the `mps` and `constituencies` dataframe you will see that `con
 
 Polars **never changes the dataframe in place**. It always returns the transformed data as a new object.
 
-### 9. Filtering rows
+### 8. Filtering rows
 
 Selecting a subset of the rows is a more complicated operation than selecting columns, because rows are filtered according to criteria that you provide.
 
@@ -241,7 +224,7 @@ Use a tilde `~` at the start of the `filter` expression to find all rows that do
 other_regions = constituencies.filter(~ pl.col("region_name").is_in(northern_regions))
 ```
 
-### 10. Sorting rows
+### 9. Sorting rows
 
 Use the `sort` method so sort the rows. In the simplest case you just specify the column to sort by.
 
@@ -261,7 +244,7 @@ To sort by more than one column, provide a list of column names. The `descending
 constituencies.sort(["region_name", "constituency_name"], descending=[True, False])
 ```
 
-### 11. Chaining method calls
+### 10. Chaining method calls
 
 You can combine several Polars operations by chaining method calls. For example we can:
 
@@ -303,7 +286,7 @@ safe_lab_seats = (
 )
 ```
 
-### 12. Adding new columns
+### 11. Adding new columns
 
 So far we have selected, filtered and sorted data.
 
@@ -391,7 +374,7 @@ constituencies = constituencies.with_columns(
 
 This creates a new column called `seat_type` that classifies seats as “Safe” or “Marginal”.
 
-### 13. Aggregating data
+### 12. Aggregating data
 
 Often we want to summarise data, rather than look at individual rows.
 
@@ -467,7 +450,7 @@ This expression in the code block above calculates the number of seats that Labo
 
 Can you figure out how and why this works?
 
-## 14. Joins
+### 13. Joins
 
 Often the data we need is spread across multiple datasets.
 
@@ -512,7 +495,7 @@ After joining the dataframes, you can analyse changes between 2019 and 2024.
 
 Try comparing the 2024 `winning_party` with the `winning_party_2019` to find all seats that changed hands.
 
-### 15. Null handling
+### 14. Null handling
 
 Real-world datasets often contain missing values. Polars represents these missing data values as `null`.
 
@@ -552,7 +535,7 @@ When using `group_by`, `null` values are ignored in most aggregation functions l
 
 Being explicit about how you handle nulls helps prevent mistakes in analysis.
 
-### 16. Saving datasets
+### 15. Saving datasets
 
 After transforming your data, you may want to save the result.
 
