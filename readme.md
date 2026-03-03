@@ -16,5 +16,5 @@ The Python version should be version 3.13 or later. See the [Environment](docs/e
 
 ## Workshop notes
 
-The notes for the workshop can be found in [workshop.md](/workshop.md).
+The notes for the workshop can be found in [Workshop](/workshop.md).
 
