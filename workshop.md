@@ -27,6 +27,8 @@
 15. [Null handling](#15-null-handling)
 16. [Saving datasets](#16-saving-datasets)
 
+---
+
 ## Intro
 
 ### 1. What is Polars?
@@ -58,6 +60,8 @@ The main advantages of Polars are:
 - **Easy to use** - It has a coherent, friendly and memorable API
 
 Polars doesn't copy the syntax of R's [tidyverse](https://tidyverse.org/), but it feels similary logical and intuitive. We find it more enjoyable to use than Pandas.
+
+---
 
 ## Setting up
 
@@ -157,6 +161,8 @@ In some environments (e.g. IPython) it also shows only some of the columns. You 
 ```python
 pl.Config.set_tbl_cols(10)
 ```
+
+---
 
 ## Working with data
 
