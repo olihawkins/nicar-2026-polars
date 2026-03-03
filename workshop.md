@@ -132,15 +132,15 @@ Let's start by loading the main dataset: `2024_constituencies.csv`.
 Create a new cell and then add and run the following line of code:
 
 ```python
-constituencies = pl.read_csv("datasets/2024_constituencies.csv")
+cs = pl.read_csv("datasets/2024_constituencies.csv")
 ```
 
-This loads the CSV data into the `constituencies` variable as a dataframe.
+This loads the CSV data into the `cs` variable as a dataframe.
 
 Add another cell and just include the variable name.
 
 ```zsh
-constituencies
+cs
 ```
 
 Putting the name of a variable on the last line of a cell will print the contents of the variable.
@@ -158,10 +158,10 @@ Use the `select` method to select only certain columns from the dataframe.
 You can provide each column name as an argument like this.
 
 ```python
-mps = constituencies.select("constituency_name", "mp_firstname", "mp_surname")
+mps = cs.select("constituency_name", "mp_firstname", "mp_surname")
 ```
 
-If you now print the `mps` and `constituencies` dataframe you will see that `constituencies` hasn't changed.
+If you now print the `mps` and `cs` dataframe you will see that `cs` hasn't changed.
 
 Polars **never changes the dataframe in place**. It always returns the transformed data as a new object.
 
@@ -176,7 +176,7 @@ Let's start with a simple example.
 Each of the 650 constituencies in the dataset belongs to a region. Let's find all constituencies in Wales.
 
 ```python
-wales = constituencies.filter(pl.col("region_name") == "Wales")
+wales = cs.filter(pl.col("region_name") == "Wales")
 ```
 
 The comparison operators you use to `filter` are the same as those used in most programming langauges:
@@ -205,8 +205,8 @@ northern_regions = [
     "Yorkshire and The Humber"
 ]
 
-northern_constituencies = constituencies.filter(pl.col("region_name").is_in(northern_regions))
-northern_constituencies
+northern_cs = cs.filter(pl.col("region_name").is_in(northern_regions))
+northern_cs
 ```
 
 #### Using `~` to negate the conditioin
@@ -214,7 +214,7 @@ northern_constituencies
 Use a tilde `~` at the start of the `filter` expression to find all rows that don't meet the criteria.
 
 ```python
-other_regions = constituencies.filter(~ pl.col("region_name").is_in(northern_regions))
+other_regions = cs.filter(~ pl.col("region_name").is_in(northern_regions))
 ```
 
 ### 9. Sorting rows
@@ -222,19 +222,19 @@ other_regions = constituencies.filter(~ pl.col("region_name").is_in(northern_reg
 Use the `sort` method so sort the rows. In the simplest case you just specify the column to sort by.
 
 ```python
-constituencies.sort("majority")
+cs.sort("majority")
 ```
 
 The sort order is ascending by default. To sort descending, set the `descending` argument to `True`.
 
 ```python
-constituencies.sort("majority", descending=True)
+cs.sort("majority", descending=True)
 ```
 
 To sort by more than one column, provide a list of column names. The `descending` argument also takes a list.
 
 ```python
-constituencies.sort(["region_name", "constituency_name"], descending=[True, False])
+cs.sort(["region_name", "constituency_name"], descending=[True, False])
 ```
 
 ### 10. Chaining method calls
@@ -252,7 +252,7 @@ Because Python uses whitespace for formatting, the neatest way to type this is t
 
 ```python
 safe_lab_seats = (
-    constituencies
+    cs
         .select(
             "constituency_name",
             "winning_party",
@@ -267,7 +267,7 @@ One other helpful method is `with_row_index`. This adds a column to the start of
 
 ```python
 safe_lab_seats = (
-    constituencies
+    cs
         .select(
             "constituency_name",
             "winning_party",
@@ -294,7 +294,7 @@ Like `filter`, this works using expressions built with `pl.col`.
 For example, instead of filtering for safe seats for each party, we could create a new column that shows whether a seat is "safe" for the winning party in each constituency.
 
 ```python
-constituencies.with_columns(
+cs.with_columns(
     (pl.col("majority") > 10000).alias("is_safe")
 )
 ```
@@ -320,7 +320,7 @@ This means that if you want to modify a column in place, you can just leave off 
 For example, suppose we want to convert the `declaration_time` column from a string to a datetime:
 
 ```python
-constituencies.with_columns(
+cs.with_columns(
     pl.col("declaration_time").str.to_datetime(time_zone="Europe/London")
 )
 ```
@@ -328,7 +328,7 @@ constituencies.with_columns(
 You can add multiple columns at once by passing multiple expressions. So in addition to converting the `declaration_time`, we can create a column for `turnout` that shows the percentage of the people who were eligible to vote that actually did vote.
 
 ```python
-constituencies.with_columns(
+cs.with_columns(
     pl.col("declaration_time").str.to_datetime(time_zone="Europe/London"),
     (pl.col("valid_votes") / pl.col("electorate") * 100).alias("turnout")
 )
@@ -343,7 +343,7 @@ To do that, use `pl.lit`, which stands for “literal”.
 For example, suppose we want to label this dataset as the 2024 election.
 
 ```python
-constituencies.with_columns(
+cs.with_columns(
     pl.lit(2024).alias("election_year")
 )
 ```
@@ -357,7 +357,7 @@ This creates a new column where every row contains the value `2024`.
 For example:
 
 ```python
-constituencies = constituencies.with_columns(
+cs = cs.with_columns(
     pl.when(pl.col("majority") > 10000)
       .then(pl.lit("Safe"))
       .otherwise(pl.lit("Marginal"))
@@ -384,7 +384,7 @@ Let’s count how many constituencies each party won.
 
 ```python
 seats_by_party = (
-    constituencies
+    cs
         .group_by("winning_party")
         .agg(pl.len().alias("seats_won"))
         .sort("seats_won", descending=True)
@@ -400,7 +400,7 @@ We can also calculate statistics.
 For example, let's first add a column to our dataset that calculates the Labour party's share of the vote in each constituency: the number of votes for Labour divided by the number of valid votes in total.
 
 ```python
-constituencies = constituencies.with_columns(
+cs = cs.with_columns(
     (pl.col("votes_lab") / pl.col("valid_votes") * 100).alias("share_lab"),
 )
 ```
@@ -409,7 +409,7 @@ And then let's calculate the Labour party's average share of the vote in each re
 
 ```python
 average_share_lab = (
-    constituencies
+    cs
         .group_by("region_name")
         .agg(pl.col("share_lab").mean().alias("avg_share_lab"))
         .sort("avg_share_lab", descending=True)
@@ -420,7 +420,7 @@ You can calculate multiple summary statistics at once.
 
 ```python
 summary_lab = (
-    constituencies
+    cs
         .group_by("region_name")
         .agg(
             pl.len().alias("seats"),
@@ -466,7 +466,7 @@ Both datasets contain a column called `constituency_id`.
 We can join them like this:
 
 ```python
-election_comparison = constituencies.join(
+election_comparison = cs.join(
     winners_2019,
     on="constituency_id",
     how="left"
@@ -497,7 +497,7 @@ Our datasets do not contain any `null` values, but let's make a dataframe that c
 By sampling only 300 of the 650 rows from `winners_209`, 350 rows in our resulting dataframe will contain `null` values for the columns from `winners_2019`.
 
 ```python
-has_nulls = constituencies.join(
+has_nulls = cs.join(
     winners_2019.sample(300),
     on="constituency_id",
     how="left"
