@@ -83,7 +83,7 @@ jupyter lab
 
 This should open the JupyterLab interface in a web browser.
 
-This Python environment has been created for you. Have a look at [Environment](/docs/environment.md) if you want to learn how to set up a Python environment from scratch.
+Have a look at [Environment](/docs/environment.md) if you want to learn how to set up a Python environment from scratch.
 
 ### 4. Importing polars
 
