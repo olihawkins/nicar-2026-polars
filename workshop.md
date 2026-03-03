@@ -9,7 +9,7 @@
 
 ### Setting up
 
-3. [Setting up](#3-setting-up)
+3. [Launching a notebook](#3-launching-a-notebook)
 4. [Importing Polars](#4-importing-polars)
 5. [Our datasets](#5-our-datasets)
 6. [Loading data](#6-loading-data)
@@ -27,7 +27,9 @@
 15. [Null handling](#15-null-handling)
 16. [Saving datasets](#16-saving-datasets)
 
-## 1. What is Polars?
+## Intro
+
+### 1. What is Polars?
 
 [Polars](https://pola.rs/) is a dataframe library for Python.
 
@@ -41,7 +43,7 @@ A tidy dataset is a table where:
 - Each column is variable
 - Each cell is a single value
 
-## 2. Why use Polars?
+### 2. Why use Polars?
 
 Doesn't Python already have a dataframe library?
 
@@ -57,7 +59,9 @@ The main advantages of Polars are:
 
 Polars doesn't copy the syntax of R's [tidyverse](https://tidyverse.org/), but it feels similary logical and intuitive. We find it more enjoyable to use than Pandas.
 
-## 3. Setting up
+## Setting up
+
+### 3. Launching a notebook
 
 We are going to work with Polars in a Jupyter Notebook.
 
@@ -75,7 +79,7 @@ jupyter lab
 
 This should open the JupyterLab interface in a web browser.
 
-## 4. Importing polars
+### 4. Importing polars
 
 We haven't provided a pre-filled notebook because we want you to make one from scratch.
 
@@ -99,7 +103,7 @@ There are three ways to run the cell:
 
 Running this cell will import the `polars` package under the name `pl`.
 
-## 5. Our datasets
+### 5. Our datasets
 
 The data files for the workshop are included in the `datasets` directory. These contain the results of the 2024 UK general election. The electoral system used in UK general elections is called `first-past-the-post` and it's fairly straightforward:
 
@@ -116,7 +120,7 @@ The data files are:
 
 During the workshop we will answer various questions about the election results by transforming and combining the data from these datasets.
 
-## 6. Loading data
+### 6. Loading data
 
 Let's start by loading the main dataset: `2024_constituencies.csv`.
 
@@ -138,7 +142,7 @@ Putting the name of a variable on the last line of a cell will print the content
 
 Notice that while Polars has correctly guessed the types of most of the columns, the `declaration_time` column has been loaded as a string and not a datetime. We will fix that later.
 
-## 7. Changing the display configuration
+### 7. Changing the display configuration
 
 By default Polars prints only ten rows from the dataframe: the first five and the last five.
 
@@ -154,7 +158,9 @@ In some environments (e.g. IPython) it also shows only some of the columns. You 
 pl.Config.set_tbl_cols(10)
 ```
 
-## 8. Selecting columns
+## Working with data
+
+### 8. Selecting columns
 
 Use the `select` method to select only certain columns from the dataframe.
 
@@ -175,7 +181,7 @@ If you now print the `mps` and `constituencies` dataframe you will see that `con
 
 Polars **never changes the dataframe in place**. It always returns the transformed data as a new object.
 
-## 9. Filtering rows
+### 9. Filtering rows
 
 Selecting a subset of the rows is a more complicated operation than selecting columns, because rows are filtered according to criteria that you provide.
 
@@ -200,11 +206,11 @@ The comparison operators you use to `filter` are the same as those used in most 
 
 In our dataset their is a column called `majority`. This is the number of votes the winning candidate won over the second place candidate. The size of the majority is often taken as a measure of how safe a seat is. 
 
-### Try it yourself
+#### Try it yourself
 
 See if you can filter for all constituencies where the majority is greater than ten thousand.
 
-### Using `is_in`
+#### Using `is_in`
 
 As well as making comparisons, you can test if the value in a cell belongs to a list of values using the `is_in` method of `pl.col`. For example, to find all the constituencies in the northern regions of the UK you could do this.
 
@@ -219,7 +225,7 @@ northern_constituencies = constituencies.filter(pl.col("region_name").is_in(nort
 northern_constituencies
 ```
 
-### Using `~` to negate the conditioin
+#### Using `~` to negate the conditioin
 
 Use a tilde `~` at the start of the `filter` expression to find all rows that don't meet the criteria.
 
@@ -227,7 +233,7 @@ Use a tilde `~` at the start of the `filter` expression to find all rows that do
 other_regions = constituencies.filter(~ pl.col("region_name").is_in(northern_regions))
 ```
 
-## 10. Sorting rows
+### 10. Sorting rows
 
 Use the `sort` method so sort the rows. In the simplest case you just specify the column to sort by.
 
@@ -247,7 +253,7 @@ To sort by more than one column, provide a list of column names. The `descending
 constituencies.sort(["region_name", "constituency_name"], descending=[True, False])
 ```
 
-## 11. Chaining method calls
+### 11. Chaining method calls
 
 You can combine several Polars operations by chaining method calls. For example we can:
 
@@ -289,7 +295,7 @@ safe_lab_seats = (
 )
 ```
 
-## 12. Adding new columns
+### 12. Adding new columns
 
 So far we have selected, filtered and sorted data.
 
@@ -299,7 +305,7 @@ Use the `with_columns` method.
 
 Like `filter`, this works using expressions built with `pl.col`.
 
-### Using `with_columns`
+#### Using `with_columns`
 
 For example, instead of filtering for safe seats for each party, we could create a new column that shows whether a seat is "safe" for the winning party in each constituency.
 
@@ -315,11 +321,11 @@ The expression used in this example should be familiar, because it is the same o
 
 But `with_columns` accepts a much wider range of expressions than `filter`, which only accepts expressions that return `True` or `False`.
 
-### Understanding `alias`
+#### Understanding `alias`
 
 The `alias` method of a Polars expression is used to provide the name of the column that should be created from the expression.
 
-### Transforming columns in place
+#### Transforming columns in place
 
 You can also transform existing columns.
 
@@ -344,7 +350,7 @@ constituencies.with_columns(
 )
 ```
 
-### Using `pl.lit`
+#### Using `pl.lit`
 
 Sometimes you want to create a column that contains the same value in every row.
 
@@ -360,7 +366,7 @@ constituencies.with_columns(
 
 This creates a new column where every row contains the value `2024`.
 
-### Using `pl.when`
+#### Using `pl.when`
 
 `pl.lit` is especially useful when building conditional columns with `pl.when`.
 
@@ -377,7 +383,7 @@ constituencies = constituencies.with_columns(
 
 This creates a new column called `seat_type` that classifies seats as “Safe” or “Marginal”.
 
-## 13. Aggregating data
+### 13. Aggregating data
 
 Often we want to summarise data, rather than look at individual rows.
 
@@ -388,7 +394,7 @@ For example:
 
 To do this, use `group_by` and `agg` (short for aggregate).
 
-### Counting rows by group
+#### Counting rows by group
 
 Let’s count how many constituencies each party won.
 
@@ -403,7 +409,7 @@ seats_by_party = (
 
 `pl.len()` counts the number of rows in each group.
 
-### Calculating aggregate statistics
+#### Calculating aggregate statistics
 
 We can also calculate statistics. 
 
@@ -443,7 +449,7 @@ summary_lab = (
 )
 ```
 
-### Bonus quiz question
+#### Bonus quiz question
 
 This expression in the code block above calculates the number of seats that Labour won in each region.
 
@@ -492,13 +498,13 @@ The `how` argument specifies the type of join:
 
 A left join is often safest when you want to preserve your main dataset.
 
-### Try it yourself
+#### Try it yourself
 
 After joining the dataframes, you can analyse changes between 2019 and 2024.
 
 Try comparing the 2024 `winning_party` with the `winning_party_2019` to find all seats that changed hands.
 
-## 15. Null handling
+### 15. Null handling
 
 Real-world datasets often contain missing values. Polars represents these missing data values as `null`.
 
@@ -538,7 +544,7 @@ When using `group_by`, `null` values are ignored in most aggregation functions l
 
 Being explicit about how you handle nulls helps prevent mistakes in analysis.
 
-## 16. Saving datasets
+### 16. Saving datasets
 
 After transforming your data, you may want to save the result.
 
