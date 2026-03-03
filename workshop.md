@@ -2,12 +2,12 @@
 
 ## Contents
 
-### [Intro](#intro)
+### Intro
 
 1. [What is Polars?](#1-what-is-polars)
 2. [Why use Polars?](#2-why-use-polars)
 
-### [Setting up](#setting-up)
+### Setting up
 
 3. [Launching a notebook](#3-launching-a-notebook)
 4. [Importing Polars](#4-importing-polars)
@@ -15,7 +15,7 @@
 6. [Loading data](#6-loading-data)
 7. [Changing the display configuration](#7-changing-the-display-configuration)
 
-### [Working with data](#working-with-data)
+### Working with data
 
 8. [Selecting columns](#8-selecting-columns)
 9. [Filtering rows](#9-filtering-rows)
@@ -27,11 +27,7 @@
 15. [Null handling](#15-null-handling)
 16. [Saving datasets](#16-saving-datasets)
 
-<br/>
-
 ---
-
-<br/>
 
 ## Intro
 
