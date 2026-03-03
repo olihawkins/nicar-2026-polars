@@ -325,12 +325,12 @@ cs.with_columns(
 )
 ```
 
-You can add multiple columns at once by passing multiple expressions. So in addition to converting the `declaration_time`, we can create a column for `turnout` that shows the percentage of the people who were eligible to vote that actually did vote.
+You can add multiple columns at once by passing multiple expressions.
 
 ```python
 cs.with_columns(
-    pl.col("declaration_time").str.to_datetime(time_zone="Europe/London"),
-    (pl.col("valid_votes") / pl.col("electorate") * 100).alias("turnout")
+    (pl.col("majority") > 10000).alias("safe_seat"),
+    pl.col("declaration_time").str.to_datetime(time_zone="Europe/London"))
 )
 ```
 
