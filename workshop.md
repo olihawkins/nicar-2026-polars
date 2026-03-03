@@ -196,25 +196,28 @@ See if you can filter for all constituencies where the majority is greater than 
 
 #### Using `is_in`
 
-As well as making comparisons, you can test if the value in a cell belongs to a list of values using the `is_in` method of `pl.col`. For example, to find all the constituencies in the northern regions of the UK you could do this.
+As well as making comparisons, you can test if the value in a cell belongs to a list of values using the `is_in` method of `pl.col`. 
+
+For example, let's filter our main dataset to include just the constituencies in Great Britain i.e. removing the constituencies in Northern Ireland. Northern Ireland has a different set of political parties to the rest of the UK and is generally analysed separately.
 
 ```python
-northern_regions = [
-    "North East", 
-    "North West", 
-    "Yorkshire and The Humber"
+great_britain = [
+    "England", 
+    "Wales", 
+    "Scotland"
 ]
 
-northern_cs = cs.filter(pl.col("region_name").is_in(northern_regions))
-northern_cs
+cs = cs.filter(pl.col("country_name").is_in(great_britain))
+cs
 ```
 
 #### Using `~` to negate the conditioin
 
-Use a tilde `~` at the start of the `filter` expression to find all rows that don't meet the criteria.
+Use a tilde `~` at the start of the `filter` expression to find all rows that don't meet the criteria. For example, this will find only the constituencies in Northern Ireland.
+
 
 ```python
-other_regions = cs.filter(~ pl.col("region_name").is_in(northern_regions))
+northern_ireland = cs.filter(~ pl.col("country_name").is_in(great_britain))
 ```
 
 ### 9. Sorting rows
