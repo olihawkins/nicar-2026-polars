@@ -205,8 +205,8 @@ northern_regions = [
     "Yorkshire and The Humber"
 ]
 
-northern_regions = cs.filter(pl.col("region_name").is_in(northern_regions))
-northern_regions
+northern_cs = cs.filter(pl.col("region_name").is_in(northern_regions))
+northern_cs
 ```
 
 #### Using `~` to negate the conditioin
