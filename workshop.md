@@ -161,13 +161,6 @@ You can provide each column name as an argument like this.
 mps = constituencies.select("constituency_name", "mp_firstname", "mp_surname")
 ```
 
-Or you can provide them as a list.
-
-```python
-mp_columns = ["constituency_name", "mp_firstname", "mp_surname"]
-mps = constituencies.select(mp_columns)
-```
-
 If you now print the `mps` and `constituencies` dataframe you will see that `constituencies` hasn't changed.
 
 Polars **never changes the dataframe in place**. It always returns the transformed data as a new object.
