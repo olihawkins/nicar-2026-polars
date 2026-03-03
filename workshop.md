@@ -397,51 +397,29 @@ seats_by_party = (
 
 We can also calculate statistics. 
 
-For example, let's first add a column to our dataset that calculates the Labour party's share of the vote in each constituency: the number of votes for Labour divided by the number of valid votes in total.
+For example, let's calculate the average majority by winning party.
 
 ```python
-cs = cs.with_columns(
-    (pl.col("votes_lab") / pl.col("valid_votes") * 100).alias("share_lab"),
-)
-```
-
-And then let's calculate the Labour party's average share of the vote in each region.
-
-```python
-average_share_lab = (
+av_maj_by_pary = (
     cs
-        .group_by("region_name")
-        .agg(pl.col("share_lab").mean().alias("avg_share_lab"))
-        .sort("avg_share_lab", descending=True)
+        .group_by("winning_party")
+        .agg(pl.col("majority").mean().alias("av_maj"))
+        .sort("av_maj", descending=True)
 )
 ```
 
 You can calculate multiple summary statistics at once.
 
 ```python
-summary_lab = (
+summary = (
     cs
-        .group_by("region_name")
+        .group_by("winning_party")
         .agg(
-            pl.len().alias("seats"),
-            (pl.col("winning_party") == "Lab").sum().alias("seats_lab"),
-            pl.col("share_lab").mean().alias("avg_share_lab"),
-            pl.col("share_lab").min().alias("min_share_lab"),
-            pl.col("share_lab").max().alias("max_share_lab")
-        )
-        .sort("avg_share_lab", descending=True)
+            pl.len().alias("seats_won"),
+            pl.col("majority").mean().alias("av_maj"))
+        .sort("av_maj", descending=True)
 )
 ```
-
-#### Bonus quiz question
-
-This expression in the code block above calculates the number of seats that Labour won in each region.
-
-```python
-(pl.col("winning_party") == "Lab").sum().alias("seats_lab")
-```
-
-Can you figure out how and why this works?
 
 ### 13. Joins
 
