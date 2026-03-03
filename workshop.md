@@ -459,7 +459,7 @@ A left join is often safest when you want to preserve your main dataset.
 After joining the dataframes, we can work out how many seats changed hands from one party to another.
 
 ```python
-(
+seat_changes = (
     election_comparison
         .filter(pl.col("winning_party") != pl.col("winning_party_2019"))
         .group_by("winning_party_2019", "winning_party")
