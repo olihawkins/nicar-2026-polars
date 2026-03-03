@@ -186,9 +186,11 @@ The comparison operators you use to `filter` are the same as those used in most 
 - `>=` - Greater than or equal to
 - `!=` - Not equal to
 
-In our dataset their is a column called `majority`. This is the number of votes the winning candidate won over the second place candidate. The size of the majority is often taken as a measure of how safe a seat is. 
+In our dataset their is a column called `majority`. This is the number of votes the winning candidate won over the second place candidate. The size of the majority is often taken as a measure of how safe a seat is. Let's filter for all constituencies where the majority is greater than ten thousand.
 
-See if you can filter for all constituencies where the majority is greater than ten thousand.
+```python
+safe_seats = cs.filter(pl.col("majority") > 10000)
+```
 
 #### Using `is_in`
 
@@ -204,7 +206,6 @@ great_britain = [
 ]
 
 cs = cs.filter(pl.col("country_name").is_in(great_britain))
-cs
 ```
 
 #### Using `~` to negate the conditioin
@@ -233,7 +234,7 @@ cs.sort("majority", descending=True)
 To sort by more than one column, provide a list of column names. The `descending` argument also takes a list.
 
 ```python
-cs.sort(["region_name", "constituency_name"], descending=[True, False])
+cs.sort(["region_name", "constituency_name"], descending=[False, True])
 ```
 
 ### 10. Chaining method calls
@@ -329,7 +330,7 @@ You can add multiple columns at once by passing multiple expressions.
 ```python
 cs.with_columns(
     (pl.col("majority") > 10000).alias("safe_seat"),
-    pl.col("declaration_time").str.to_datetime(time_zone="Europe/London"))
+    pl.col("declaration_time").str.to_datetime(time_zone="Europe/London")
 )
 ```
 
@@ -399,7 +400,7 @@ We can also calculate statistics.
 For example, let's calculate the average majority by winning party.
 
 ```python
-av_maj_by_pary = (
+av_maj_by_party = (
     cs
         .group_by("winning_party")
         .agg(pl.col("majority").mean().alias("av_maj"))
@@ -461,10 +462,10 @@ After joining the dataframes, we can work out how many seats changed hands from 
 ```python
 seat_changes = (
     election_comparison
-        .filter(pl.col("winning_party") != pl.col("winning_party_2019"))
-        .group_by("winning_party_2019", "winning_party")
-        .agg(pl.len().alias("count"))
-        .sort( "count", "winning_party_2019", descending=True)
+        .filter(pl.col("winning_party") != pl.col("winning_party_2019"))
+        .group_by("winning_party_2019", "winning_party")
+        .agg(pl.len().alias("count"))
+        .sort("count", "winning_party_2019", descending=True)
 )
 ```
 
