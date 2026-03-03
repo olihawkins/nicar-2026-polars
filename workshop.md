@@ -23,8 +23,7 @@
 11. [Adding new columns](#11-adding-new-columns)
 12. [Aggregating data](#12-aggregating-data)
 13. [Joins](#13-joins)
-14. [Null handling](#14-null-handling)
-15. [Saving datasets](#15-saving-datasets)
+14. [Saving datasets](#14-saving-datasets)
 
 ---
 
@@ -117,10 +116,9 @@ The data files for the workshop are included in the [datasets](/datasets) direct
 - Every voter casts one vote for one candidate in one constituency
 - The candidate with the most votes in each constituency wins that seat
 
-The data files are:
+The data files we will use in this workshop are:
 
 - `2024_constituencies.csv` - A table of the election results with one row per constituency
-- `2024_candidates.csv` - A table of the election results with one row per candidate
 - `2019_constituency_winners.csv` - A table showing which party won each constituency at the previous election in 2019
 
 During the workshop we will answer various questions about the election results by transforming and combining the data from these datasets.
@@ -463,53 +461,19 @@ The `how` argument specifies the type of join:
 
 A left join is often safest when you want to preserve your main dataset.
 
-#### Try it yourself
-
 After joining the dataframes, you can analyse changes between 2019 and 2024.
 
-Try comparing the 2024 `winning_party` with the `winning_party_2019` to find all seats that changed hands.
-
-### 14. Null handling
-
-Real-world datasets often contain missing values. Polars represents these missing data values as `null`.
-
-Our datasets do not contain any `null` values, but let's make a dataframe that contains some nulls by doing the same join as before, but with a random subset of rows from the second dataframe. 
-
-By sampling only 300 of the 650 rows from `winners_209`, 350 rows in our resulting dataframe will contain `null` values for the columns from `winners_2019`.
-
 ```python
-has_nulls = cs.join(
-    winners_2019.sample(300),
-    on="constituency_id",
-    how="left"
+(
+    election_comparison
+        .filter(pl.col("winning_party") != pl.col("winning_party_2019"))
+        .group_by("winning_party_2019", "winning_party")
+        .agg(pl.len().alias("count"))
+        .sort( "count", "winning_party_2019", descending=True)
 )
 ```
 
-You can check for null values using `is_null`.
-
-```python
-has_nulls.filter(pl.col("winning_party_2019").is_null())
-```
-
-You can remove rows containing nulls using `drop_nulls`.
-
-```python
-has_nulls.drop_nulls()
-```
-
-Or fill null values with something else using `fill_nulls`.
-
-```python
-has_nulls.with_columns(
-    pl.col("winning_party_2019").fill_null("Unknown")
-)
-```
-
-When using `group_by`, `null` values are ignored in most aggregation functions like `mean`.
-
-Being explicit about how you handle nulls helps prevent mistakes in analysis.
-
-### 15. Saving datasets
+### 14. Saving datasets
 
 After transforming your data, you may want to save the result.
 
