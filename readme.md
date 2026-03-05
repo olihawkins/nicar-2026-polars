@@ -41,7 +41,7 @@ A tidy dataset is a table where:
 
 - Each row is an observation
 - Each column is variable
-- Each cell is a single value
+- Each cell is an individual value
 
 ### 2. Why use Polars?
 
