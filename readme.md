@@ -67,7 +67,7 @@ Polars doesn't copy the syntax of R's [tidyverse](https://tidyverse.org/), but i
 
 We are going to work with Polars in a Jupyter Notebook.
 
-If you're using a NICAR laptop, open a terminal on your Mac and paste the following command.
+If you're using a NICAR Mac laptop, open the terminal app in the dock and paste the following command.
 
 ```zsh
 cd ~/Desktop/hands_on_classes/20260305-thursday-analyzing-election-data-with-polars-and-python/
