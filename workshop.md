@@ -301,7 +301,7 @@ If you don't call `alias` at the end of your expression, the new data will repla
 
 This means that if you want to modify a column in place, you can just leave off `alias`.
 
-For example, suppose we want to convert the `declaration_time` column from a string to a datetime:
+For example, if we want to convert the `declaration_time` column from a string to a datetime we can use `str.to_datetime`.
 
 ```python
 cs.with_columns(
