@@ -169,6 +169,12 @@ If you now print the `mps` and `cs` dataframes you will see that the `cs` datafr
 
 Polars **never changes the dataframe in place**. It always returns the transformed data as a new object.
 
+If you want to remove columns, you can use the `drop` function in the exact same way.
+
+```python
+no_mps = cs.drop("mp_firstname", "mp_surname", "mp_gender")
+```
+
 ### 8. Filtering rows
 
 Selecting a subset of the rows is a more complicated operation than selecting columns, because rows are filtered according to criteria that you provide.
