@@ -1,6 +1,10 @@
 # Analyzing election data with Polars and Python
 
-## INTRO ************
+## INTRO ****\*\*\*\*****
+
+```zsh
+cd ~/Desktop/hands_on_classes/20260305-thursday-analyzing-election-data-with-polars-and-python/
+```
 
 ```zsh
 source .venv/bin/activate
@@ -31,7 +35,7 @@ cs
 
 - polars shows the types under the column headers
 
-## SELECT  ************
+## SELECT ****\*\*\*\*****
 
 ```python
 mps = cs.select("constituency_name", "mp_firstname", "mp_surname")
@@ -39,13 +43,13 @@ mps = cs.select("constituency_name", "mp_firstname", "mp_surname")
 
 - Polars **never changes the dataframe in place**. It always returns the transformed data as a new object.
 
-## DROP  ************
+## DROP ****\*\*\*\*****
 
 ```python
 cs.drop("constituency_name")
 ```
 
-## FILTER  ************
+## FILTER ****\*\*\*\*****
 
 - basic filtering (x=y)
 
@@ -87,7 +91,7 @@ northern_ireland = cs.filter(~ pl.col("country_name").is_in(great_britain))
 
 - can do more advanced filtering if you need to say things like "if the value includes some string"
 
-## SORT  ************
+## SORT ****\*\*\*\*****
 
 ```python
 cs.sort("majority")
@@ -101,7 +105,7 @@ cs.sort("majority", descending=True)
 cs.sort(["region_name", "constituency_name"], descending=[False, True])
 ```
 
-## CHAINING  ************
+## CHAINING ****\*\*\*\*****
 
 - we can chain all of these methods. its accumulative
 - So if we wanted to find a list of safe seats won by the Labour party, sorted from the most safe to the least safe we could
@@ -119,7 +123,7 @@ safe_lab_seats = (
 )
 ```
 
-## CREATE NEW COLS  ************
+## CREATE NEW COLS ****\*\*\*\*****
 
 - so far we have been inspecting the data as it is. now we are going to look at how to create new columns
 
@@ -165,7 +169,7 @@ cs = cs.with_columns(
 )
 ```
 
-## GROUP BY  ************
+## GROUP BY ****\*\*\*\*****
 
 - aggregating data with group_by
 
@@ -204,7 +208,7 @@ summary = (
 
 - Grouping will only return the columns that you are grouping by and the columns you have told it how to handle.
 
-## JOINS  ************
+## JOINS ****\*\*\*\*****
 
 - load other dataset, inspect it (same constituency id)
 
@@ -243,7 +247,7 @@ seat_changes = (
 
 - Grouping by multiple - there will be a different group for each unique combination of these values.
 
-## SAVING  ************
+## SAVING ****\*\*\*\*****
 
 ```python
 election_comparison.write_csv("datasets/election_comparison.csv")
