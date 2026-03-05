@@ -219,7 +219,7 @@ northern_ireland = cs.filter(~ pl.col("country_name").is_in(great_britain))
 
 ### 9. Sorting rows
 
-Use the `sort` method to sort the rows. In the simplest case you just specify the column to sort by.
+Use the `sort` method to sort the dataframe rows. In the simplest case you just specify the column to sort by.
 
 ```python
 cs.sort("majority")
