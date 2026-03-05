@@ -196,7 +196,7 @@ safe_seats = cs.filter(pl.col("majority") > 10000)
 
 As well as making comparisons, you can test if the value in a cell belongs to a list of values using the `is_in` method of `pl.col`. 
 
-For example, let's filter our main dataset to include just the constituencies in Great Britain i.e. removing the constituencies in Northern Ireland. Northern Ireland has a different set of political parties to the rest of the UK and is generally analysed separately.
+Let's filter our main dataset to include just the constituencies in Great Britain i.e. removing the constituencies in Northern Ireland. Northern Ireland has a different set of political parties to the rest of the UK and is generally analysed separately.
 
 ```python
 great_britain = [
