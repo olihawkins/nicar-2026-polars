@@ -159,7 +159,7 @@ You can provide each column name as an argument like this.
 mps = cs.select("constituency_name", "mp_firstname", "mp_surname")
 ```
 
-If you now print the `mps` and `cs` dataframe you will see that `cs` hasn't changed.
+If you now print the `mps` and `cs` dataframes you will see that the `cs` dataframe hasn't changed.
 
 Polars **never changes the dataframe in place**. It always returns the transformed data as a new object.
 
