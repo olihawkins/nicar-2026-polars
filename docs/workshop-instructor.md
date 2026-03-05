@@ -1,82 +1,95 @@
 # Analyzing election data with Polars and Python
 
-## Intro
+## INTRO
 
 ```zsh
 source .venv/bin/activate
 ```
+
 ```zsh
 jupyter lab
 ```
+
 - how many people used notebooks before?
-- running cells 
-- creating cells 
+- running cells
+- creating cells
 
 ```python
 import polars as pl
 ```
-- look at 2024 constituency data 
-- load it 
+
+- look at 2024 constituency data
+- load it
 
 ```python
 cs = pl.read_csv("datasets/2024_constituencies.csv")
 ```
+
 ```zsh
 cs
 ```
-- polars shows the types under the column headers 
 
+- polars shows the types under the column headers
 
-## Inspecting data
+## INSPECTING DATA
 
-- selecting data 
+## SELECT
 
 ```python
 mps = cs.select("constituency_name", "mp_firstname", "mp_surname")
 ```
+
 - Polars **never changes the dataframe in place**. It always returns the transformed data as a new object.
+
+## DROP
 
 ```python
 cs.drop("constituency_name")
 ```
+
+## FILTER
 
 - basic filtering (x=y)
 
 ```python
 wales = cs.filter(pl.col("region_name") == "Wales")
 ```
-- other operations: 
-    - `==` - Equal to
-    - `<` - Less than
-    - `>` - Greater than
-    - `<=` - Less than or equal
-    - `>=` - Greater than or equal to
-    - `!=` - Not equal to
+
+- other operations:
+  - `==` - Equal to
+  - `<` - Less than
+  - `>` - Greater than
+  - `<=` - Less than or equal
+  - `>=` - Greater than or equal to
+  - `!=` - Not equal to
 
 - if you wanted to find all safe seats do:
 
 ```python
 safe_seats = cs.filter(pl.col("majority") > 10000)
 ```
+
 - if we wanted to filter for constituencies in certain countries (uk includes four countries)
 
 ```python
 great_britain = [
-    "England", 
-    "Wales", 
+    "England",
+    "Wales",
     "Scotland"
 ]
 
 cs = cs.filter(pl.col("country_name").is_in(great_britain))
 ```
-- negate it 
+
+- negate it
 
 ```python
 northern_ireland = cs.filter(~ pl.col("country_name").is_in(great_britain))
 ```
-- can do more advanced filtering if you need to say things like "if the value includes some string" 
 
-- sorting
+- can do more advanced filtering if you need to say things like "if the value includes some string"
+
+## SORT
 
 ```python
 cs.sort("majority")
@@ -89,10 +102,11 @@ cs.sort("majority", descending=True)
 ```python
 cs.sort(["region_name", "constituency_name"], descending=[False, True])
 ```
-- chaining 
-- we can chain all of these methods. its accumulative 
-- So if we wanted to find a list of safe seats won by the Labour party, sorted from the most safe to the least safe we could
 
+## CHAINING
+
+- we can chain all of these methods. its accumulative
+- So if we wanted to find a list of safe seats won by the Labour party, sorted from the most safe to the least safe we could
 
 ```python
 safe_lab_seats = (
@@ -107,8 +121,9 @@ safe_lab_seats = (
 )
 ```
 
-## Modifying / more advanced data
-- so far we have been inspecting the data as it is. now we are going to look at how to create new columns 
+## CREATE NEW COLS
+
+- so far we have been inspecting the data as it is. now we are going to look at how to create new columns
 
 For example, instead of filtering for safe seats for each party, we could create a new column that shows whether a seat is "safe" for the winning party in each constituency.
 
@@ -119,7 +134,6 @@ cs.with_columns(
 ```
 
 - There are times when you do want to edit in place, for example our declaration_time is currently a string
-
 
 ```python
 cs.with_columns(
@@ -136,7 +150,7 @@ cs.with_columns(
 )
 ```
 
-- These (above) will put the output of the expression as the new value. Pl.lit gives more control over the value 
+- These (above) will put the output of the expression as the new value. Pl.lit gives more control over the value
 
 ```python
 cs.with_columns(
@@ -153,6 +167,8 @@ cs = cs.with_columns(
 )
 ```
 
+## GROUP BY
+
 - aggregating data with group_by
 
 - if we wanted to know how many seats each party won we would group by "winning party" and we want to count the rows in each group
@@ -165,7 +181,8 @@ seats_by_party = (
         .sort("seats_won", descending=True)
 )
 ```
-- If we wanted to do something more advanced, e.g. if we wanted to group by party but find the average majority each party got we can: 
+
+- If we wanted to do something more advanced, e.g. if we wanted to group by party but find the average majority each party got we can:
 
 ```python
 av_maj_by_party = (
@@ -186,7 +203,10 @@ summary = (
         .sort("av_maj", descending=True)
 )
 ```
-- Grouping will only return the columns that you are grouping by and the columns you have told it how to handle.  
+
+- Grouping will only return the columns that you are grouping by and the columns you have told it how to handle.
+
+## JOINS
 
 - load other dataset, inspect it (same constituency id)
 
@@ -213,8 +233,6 @@ A left join is often safest when you want to preserve your main dataset.
 
 - Now that we have joined the datasets we can work out how many seats changed hands from one party to another
 
-
-
 ```python
 seat_changes = (
     election_comparison
@@ -224,10 +242,10 @@ seat_changes = (
         .sort("count", "winning_party_2019", descending=True)
 )
 ```
-- Grouping by multiple - there will be a different group for each unique combination of these values. 
 
+- Grouping by multiple - there will be a different group for each unique combination of these values.
 
-- saving as csv 
+## SAVING
 
 ```python
 election_comparison.write_csv("datasets/election_comparison.csv")
@@ -238,5 +256,5 @@ election_comparison.write_csv("datasets/election_comparison.csv")
 ```python
 election_comparison.write_parquet("datasets/election_comparison.parquet")
 ```
-- parquet saves datatypes and much smaller than csv 
 
+- parquet saves datatypes and much smaller than csv
