@@ -167,7 +167,7 @@ Polars **never changes the dataframe in place**. It always returns the transform
 
 Selecting a subset of the rows is a more complicated operation than selecting columns, because rows are filtered according to criteria that you provide.
 
-To use the `filter` method of a dataframe, you will need to use a Polars method called `pl.col` to refer to the columns you care about.
+To use the `filter` method of a dataframe, you will need to use a function called `pl.col` to refer to the columns you care about.
 
 Let's start with a simple example.
 
