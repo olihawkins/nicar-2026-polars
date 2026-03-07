@@ -8,7 +8,7 @@ This is the repo for the workshop [Analyzing election data with Polars and Pytho
 
 At NICAR, the lab computers were already set up with the relevant software. You will need to manage this setup yourself to run the code on your own computer.
 
-The workshop requires a Python project folder with a virtual environment that has `ipython`, `jupyterlab` and `polars` installed. This repo uses [uv](https://docs.astral.sh/uv/) to create the virtual environment and to install the packages and expects Python 3.13 or later. If you have `uv` installed you should be able to get set up by doing the following. 
+The workshop requires a Python project folder with a virtual environment that has `ipython`, `jupyterlab` and `polars` installed. This repo uses [uv](https://docs.astral.sh/uv/) to create the virtual environment and to install the packages, and expects Python 3.13 or later. If you have `uv` installed you should be able to get set up by doing the following. 
 
 - Clone the repository and run `uv sync` inside the project directory to set up the project
 - Activate the environment with `source .venv/bin/activate`
