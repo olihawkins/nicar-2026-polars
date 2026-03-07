@@ -1,5 +1,23 @@
 # Analyzing election data with Polars and Python
 
+Authors: Eade Hemingway and Oliver Hawkins
+
+This is the repo for the workshop [Analyzing election data with Polars and Python](https://schedules.ire.org/nicar-2026/#/session/1061), which was delivered by Oliver Hawkins and Eade Hemingway at NICAR 2026 in Indianapolis on the 5th of March. 
+
+## Setup
+
+At NICAR, the lab computers were already been set up with the relevant software. You will need to manage this setup yourself to run the code on your own computer.
+
+The workshop requires a Python project folder with a virtual environment that has `ipython`, `jupyterlab` and `polars` installed. This repo uses [uv](https://docs.astral.sh/uv/) to create the virtual environment and to install the packages. If you have `uv` installed you should be able to get set up by doing the following. 
+
+- Clone the repository and run `uv sync` inside the project directory to set up the project
+- Activate the environment with `source .venv/bin/activate`
+- Launch JupyterLab with `jupyter lab`
+
+If everything has installed correctly, JupyterLab should open in your default web browser and you are ready to begin.
+
+If you don't use `uv` or you want to figure out how to set things up from scratch, see the [Environment](docs/environment.md) documentation for more information.
+
 ## Contents
 
 ### Intro
