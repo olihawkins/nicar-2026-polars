@@ -467,7 +467,7 @@ The `how` argument specifies the type of join:
 - `inner` — keep only matching rows from both dataframes
 - `left` — keep all rows from the left dataframe and matching rows from the right
 - `right` — keep all rows from the right dataframe and matching rows from the left
-- `full` — keep all rows where there is match in either dataframe
+- `full` — keep all rows where there is a match in either dataframe
 
 A left join is often safest when you want to preserve your main dataset.
 
