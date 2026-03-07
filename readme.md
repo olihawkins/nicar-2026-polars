@@ -75,7 +75,7 @@ The main advantages of Polars are:
 - **Type safe** - It has a rich explicit type system that protects against bugs
 - **Easy to use** - It has a coherent, friendly and memorable API
 
-Polars doesn't copy the syntax of R's [tidyverse](https://tidyverse.org/), but it feels similary logical and intuitive. We find it more enjoyable to use than Pandas.
+Polars doesn't copy the syntax of R's [tidyverse](https://tidyverse.org/), but it feels similary logical and intuitive. We find it enjoyable to use.
 
 ---
 
