@@ -1,6 +1,6 @@
 # Analyzing election data with Polars and Python
 
-*Eade Hemingway and Oliver Hawkins*
+*By Eade Hemingway and Oliver Hawkins*
 
 This is the repo for the workshop [Analyzing election data with Polars and Python](https://schedules.ire.org/nicar-2026/#/session/1061), which was delivered at NICAR 2026 in Indianapolis on the 5th of March. 
 
