@@ -216,7 +216,7 @@ The comparison operators you use to `filter` are the same as those used in most 
 - `>=` - Greater than or equal to
 - `!=` - Not equal to
 
-In our dataset their is a column called `majority`. This is the number of votes the winning candidate won over the second place candidate. The size of the majority is often taken as a measure of how safe a seat is. Let's filter for all constituencies where the majority is greater than ten thousand.
+In our dataset there is a column called `majority`. This is the number of votes the winning candidate won over the second place candidate. The size of the majority is often taken as a measure of how safe a seat is. Let's filter for all constituencies where the majority is greater than ten thousand.
 
 ```python
 safe_seats = cs.filter(pl.col("majority") > 10000)
@@ -238,7 +238,7 @@ great_britain = [
 cs = cs.filter(pl.col("country_name").is_in(great_britain))
 ```
 
-#### Using `~` to negate the conditioin
+#### Using `~` to negate the condition
 
 Use a tilde `~` at the start of the `filter` expression to find all rows that don't meet the criteria. For example, this will find only the constituencies in Northern Ireland.
 
